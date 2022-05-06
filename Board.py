@@ -19,7 +19,7 @@ for imPath in myList:
     overlayList.append(image)
 #print(overlayList)
 header = overlayList[0]
-drawColor = (255, 0, 255)
+drawColor = (0, 0, 255)
 
 cap = cv2.VideoCapture(0)
 cap.set(3,1280)
@@ -45,26 +45,50 @@ while True:
         fingers = detector.fingersUp()
         #print(fingers)
 
+        # if fingers[1] and fingers[2] and fingers[3]:
+        #     drawColor = (0, 0, 0)
+        #     xp, yp = 0, 0
+        #     if xp == 0 and yp == 0:
+        #         xp, yp = x1, y1
+        #
+        #     cv2.line(img, (xp, yp), (x1, y1), drawColor, eraserThickness)
+        #     cv2.line(imgCanvas, (xp, yp), (x1, y1), drawColor, eraserThickness)
+
+
+        #if index finger and middle finger are up then selection mode
         if fingers[1] and fingers[2]:
             xp, yp = 0, 0
             cv2.rectangle(img,(x1,y1-25), (x2,y2+25), drawColor, cv2.FILLED)
             print("selection mode")
 
             if y1 < 125:
-                if 250 < x1 < 450:
+
+                #Select Red Brush
+                if 915 < x1 < 1030:
                     header = overlayList[0]
-                    drawColor = (255, 0, 255)
-                elif 550 < x1 < 750:
+                    drawColor = (0, 0, 255)
+
+                #Select Green Brush
+                elif 1040 < x1 < 1135:
                     header = overlayList[1]
-                    drawColor = (255, 0, 0)
-                elif 550 < x1 < 950:
-                    header = overlayList[2]
                     drawColor = (0, 255, 0)
-                elif 550 < x1 < 1200:
+
+                #Select Blue Brush
+                elif 1150 < x1 < 1275:
+                    header = overlayList[2]
+                    drawColor = (255, 0, 0)
+
+                #Select Eraser
+                elif 240 < x1 < 350:
                     header = overlayList[3]
                     drawColor = (0, 0, 0)
+
+                elif 390 < x1 < 490:
+                    cv2.circle(img,(x1,y1-25),5,drawColor)
+
             cv2.rectangle(img, (x1, y1 - 25), (x2, y2 + 25), drawColor, cv2.FILLED)
 
+        #if only index finger is up then drawing mode is on
         if fingers[1] and fingers[2] == False:
             cv2.circle(img, (x1, y1), 15, drawColor, cv2.FILLED)
             print("drawing mode")
