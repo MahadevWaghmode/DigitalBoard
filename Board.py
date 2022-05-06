@@ -28,6 +28,7 @@ cap.set(4,720)
 detector = htm.handDetector(detectionCon=0.95)
 xp, yp = 0, 0
 imgCanvas = np.zeros((720, 1280, 3), np.uint8)
+#for continues read frames used infinite loop
 while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)
